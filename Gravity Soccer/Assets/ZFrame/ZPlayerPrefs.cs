@@ -27,7 +27,7 @@ public static class ZPlayerPrefs
     const int Iterations = 555;
 
     static string strPassword = "HgVr}gTDEW_8G*rF";
-    static string strSalt = ".y6Sr2";
+    static string strSalt = "TDEW_8G*";
 
     public static void DeleteAll()
     {

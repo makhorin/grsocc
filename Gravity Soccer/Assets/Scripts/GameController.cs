@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
     private List<Player> _players = new List<Player>();
 
     private List<Generator> _sortedGenerators = new List<Generator>();
-    private int _currentLevel = 0;
+    private int _currentLevel;
     private int _leagueIndex = 0;
     private int _generatorIndex = 0;
     private bool _quited;
@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour {
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
 #endif
-        _currentLevel = Math.Max(0,ZPlayerPrefs.GetInt("level", 0));
+        _currentLevel = Math.Max(1,ZPlayerPrefs.GetInt("level", 1));
         _sortedGenerators.AddRange(Generators);
         _sortedGenerators.Sort(new GeneratorComparer());
         for (var i = 0; i < _sortedGenerators.Count && _sortedGenerators[i].MinLevel <= _currentLevel; i++)
@@ -48,6 +48,7 @@ public class GameController : MonoBehaviour {
 
         for (var i = 1; i < Leagues.Length && _currentLevel >= Leagues[i].MinMatches; i++)
             _leagueIndex = i;
+
         Goal.faceColor = Leagues[_leagueIndex].Color;
         SetLevel();
         GeneratePlayers();
