@@ -34,6 +34,11 @@ public class GameController : MonoBehaviour {
     private bool _quited;
     private string _winText = "GOAL!!!";
 
+    private float _fieldLength = 2f;
+
+    public GameObject[] ToChangeHeight;
+    public GameObject[] ToMoveUp;
+
 	void Start ()
     {
 #if RELEASE
@@ -54,6 +59,25 @@ public class GameController : MonoBehaviour {
         GeneratePlayers();
         ThrowBall();
         Physics.gravity *= 0.6f;
+
+        //ChangeHeight();
+    }
+
+    void ChangeHeight()
+    {
+        var koef = 2f;
+        foreach (var g in ToChangeHeight)
+            g.transform.localScale = new Vector3(g.transform.localScale.x, 
+                g.transform.localScale.y * koef, 
+                g.transform.localScale.z);
+
+        foreach(var g in ToMoveUp)
+        {
+            g.transform.position = new Vector3(g.transform.position.x, 
+                g.transform.position.y, 
+                g.transform.position.z);
+        }
+            
     }
 
     void GeneratePlayers()
