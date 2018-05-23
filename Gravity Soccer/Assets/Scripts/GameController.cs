@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Generators;
+using GameAnalyticsSDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,9 +10,6 @@ public class GameController : MonoBehaviour {
 
     public Player Player;
     public BallController Ball;
-
-    public float[] _positionsX = new[] { -1f, 0f, 1f };
-    public float[] _positionsY = new[] { -1f, 0f, 1f };
 
     public Generator[] Generators;
 
@@ -28,16 +26,21 @@ public class GameController : MonoBehaviour {
 
     private BallController _lastBall;
     private List<Player> _players = new List<Player>();
-    private Quaternion _playerRotation = Quaternion.Euler(10f, 0f, 0f);
+
     private List<Generator> _sortedGenerators = new List<Generator>();
     private int _currentLevel = 0;
     private int _leagueIndex = 0;
     private int _generatorIndex = 0;
-
+    private bool _quited;
     private string _winText = "GOAL!!!";
 
 	void Start ()
     {
+#if RELEASE
+        GameAnalytics.Initialize();
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
+#endif
+        _currentLevel = Math.Max(0,ZPlayerPrefs.GetInt("level", 0));
         _sortedGenerators.AddRange(Generators);
         _sortedGenerators.Sort(new GeneratorComparer());
         for (var i = 0; i < _sortedGenerators.Count && _sortedGenerators[i].MinLevel <= _currentLevel; i++)
@@ -49,6 +52,7 @@ public class GameController : MonoBehaviour {
         SetLevel();
         GeneratePlayers();
         ThrowBall();
+        Physics.gravity *= 0.6f;
     }
 
     void GeneratePlayers()
@@ -57,7 +61,7 @@ public class GameController : MonoBehaviour {
             Destroy(p.gameObject);
         _players.Clear();
 
-        _players.AddRange(_sortedGenerators[_generatorIndex].Generate(Player, _positionsX, _positionsY));
+        _players.AddRange(_sortedGenerators[_generatorIndex].Generate(Player));
         Color playersColor;
         do
         {
@@ -76,8 +80,8 @@ public class GameController : MonoBehaviour {
     private IEnumerator Throw()
     {
         yield return new WaitForSeconds(0.3f);
-        _lastBall = Instantiate(Ball, new Vector2(1.4f, -2f), Quaternion.identity);
-        _lastBall.RigidBody.AddForce(new Vector2(-2f,4f), ForceMode.Impulse);
+        _lastBall = Instantiate(Ball, new Vector2(1.25f, -1.7f), Quaternion.identity);
+        _lastBall.RigidBody.AddForce(new Vector2(-2f,0f) * _lastBall.RigidBody.mass, ForceMode.Impulse);
         _lastBall.Won += Won;
         _lastBall.Lost += Lost;
     }
@@ -92,6 +96,11 @@ public class GameController : MonoBehaviour {
 
     private void Won()
     {
+        _currentLevel++;
+#if RELEASE
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "game", _currentLevel);
+#endif
+        ZPlayerPrefs.SetInt("level", _currentLevel);
         _lastBall.Won -= Won;
         _lastBall.Lost -= Lost;
         Destroy(_lastBall.gameObject);
@@ -109,7 +118,7 @@ public class GameController : MonoBehaviour {
             p.Play();
         yield return new WaitForSeconds(0.5f);
         Goal.text = string.Empty;
-        _currentLevel++;
+
         if (_generatorIndex + 1 < _sortedGenerators.Count && _sortedGenerators[_generatorIndex + 1].MinLevel <= _currentLevel)
             _generatorIndex++;
 
@@ -127,15 +136,17 @@ public class GameController : MonoBehaviour {
         GeneratePlayers();
         ThrowBall();
         SetLevel();
+#if RELEASE
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
+#endif
     }
 
     void SetLevel()
     {
-        var level = (_currentLevel - Leagues[_leagueIndex].MinMatches) + 1;
         var ending = "th";
-        if (level < 10 || level > 19)
+        if (_currentLevel < 10 || _currentLevel > 19)
         {
-            var e = level % 10;
+            var e = _currentLevel % 10;
             switch(e)
             {
                 case 1:
@@ -150,10 +161,40 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        Score.text = level + ending + " match";
+        Score.text = _currentLevel + ending + " match";
         Score.faceColor = Leagues[_leagueIndex].Color;
         League.text = Leagues[_leagueIndex].Name;
         League.faceColor = Leagues[_leagueIndex].Color;
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        {
+            if (_quited)
+                return;
+            _quited = true;
+#if RELEASE
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "game", _currentLevel);
+#endif
+        }
+        else
+        {
+            _quited = false;
+#if RELEASE
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
+#endif
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (_quited)
+            return;
+        _quited = true;
+#if RELEASE
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "game", _currentLevel);
+#endif
     }
 
     [Serializable]

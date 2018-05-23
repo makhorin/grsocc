@@ -1,37 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Random = System.Random;
+
 
 namespace Assets.Scripts
 {
     public abstract class Generator : MonoBehaviour
     {
-        protected Random _rnd = new Random();
         protected Quaternion _rotation = Quaternion.identity;
         public abstract int MinLevel { get; }
-        protected int _pos = 0;
-        protected List<List<Vector2>> _positions;
-        public virtual IEnumerable<Player> Generate(Player pattern, float[] x, float[] y)
-        {
-            if (_positions == null)
-            {
-                _positions = FillPositions(x, y);
-               // _positions = _positions.OrderBy(p => _rnd.Next()).ToList();
-            }
-                
+        
+        public virtual IEnumerable<Player> Generate(Player pattern)
+        {                
 
-            for (var i = 0; i < _positions[_pos].Count; i++)
-                yield return Instantiate(pattern, _positions[_pos][i], _rotation);
-
-            _pos++;
-            if (_pos >= _positions.Count)
-            {
-               // _positions = _positions.OrderBy(p => _rnd.Next()).ToList();
-                _pos = 0;
-            }
+            foreach (var pos in GetNext())
+                yield return Generate(pattern, pos);
         }
 
-        protected abstract List<List<Vector2>> FillPositions(float[] xs, float[] ys);
+        protected Player Generate(Player pattern, Vector2 pos)
+        {
+            return Instantiate(pattern, pos, _rotation);
+        }
+
+        protected abstract List<Vector2> GetNext();
     }
 }

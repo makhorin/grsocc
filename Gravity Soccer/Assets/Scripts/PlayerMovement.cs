@@ -8,11 +8,21 @@ namespace Assets.Scripts
         private Vector3 _pointToMove;
 
         private Vector3 _target;
+        float _speed;
 
-        public void Init(Vector3 pointToMove)
+        public void Init(Vector3 pointToMove, float speed)
         {
             _pointToMove = pointToMove;
             _target = _pointToMove;
+            _speed = speed;
+        }
+
+        public void Init(Vector3 originalPos, Vector3 pointToMove, float speed)
+        {
+            _pointToMove = pointToMove;
+            _originalPos = originalPos;
+            _target = _pointToMove;
+            _speed = speed;
         }
 
         private void Awake()
@@ -22,7 +32,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            float step = 1f * Time.deltaTime;
+            float step = _speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, _target, step);
             if (Vector3.Distance(transform.position, _target) < 0.01f)
             {

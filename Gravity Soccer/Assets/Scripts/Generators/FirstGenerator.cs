@@ -1,41 +1,109 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+using Random = System.Random;
 namespace Assets.Scripts.Generators
 {
-    class FirstGenerator : Generator
+    public class FirstGenerator : Generator
     {
-        
         public override int MinLevel
         {
             get
             {
-                return 0;
+                return Level;
             }
         }
 
-        
+        public int Level;
+        public int MaxPlayers;
+        public float XDimension;
+        public float YDimesion;
 
-        protected override List<List<Vector2>> FillPositions(float[] xs, float[] ys)
+        protected Random _rnd = new Random();
+
+        protected override List<Vector2> GetNext()
         {
-            var positions = new List<List<Vector2>>();
-            var position = new List<Vector2>();
-            position.Add(new Vector2(xs[0], ys[0]));
-            position.Add(new Vector2(xs[0], ys[2]));
-            position.Add(new Vector2(xs[1], ys[1]));
-            position.Add(new Vector2(xs[2], ys[0]));
-            position.Add(new Vector2(xs[2], ys[2]));
-            positions.Add(position);
+            var result = new List<Vector2>();
 
-            position = new List<Vector2>();
-            position.Add(new Vector2((xs[1] + xs[2]) / 2f, ys[0]));
-            position.Add(new Vector2(xs[0], ys[1]));
-            position.Add(new Vector2(xs[1], ys[1]));
-            position.Add(new Vector2((xs[0] + xs[1]) / 2f, ys[2]));
-            position.Add(new Vector2(xs[2], ys[1]));
-            positions.Add(position);
+            if (MaxPlayers < 4)
+            {
+                GenerateOnX(result);
+            }
+            else
+            {
+                switch (_rnd.Next(0, 1))
+                {
+                    case 0:
+                        GenerateOnX(result);
+                        break;
+                    case 1:
+                        GenerateOnY(result);
+                        break;
+                }
+            }
 
-            return positions;
+            return result;
+        }
+
+        void GenerateOnX(List<Vector2> result)
+        {
+            var half = MaxPlayers / 2f;
+            var xl = XDimension;
+            var yl = YDimesion * 2;
+            var s = xl * yl;
+            var ps = s / half;
+            var xOffset = ps / yl;
+
+            for (var i = 0; i < half; i++)
+            {
+                var startX = -XDimension + (xOffset * i);
+                var xPos = startX + _rnd.NextDouble() * (xOffset * 0.8);
+
+                var yPos = -YDimesion + _rnd.NextDouble() * yl;
+
+                var pos = new Vector2((float)xPos, (float)yPos);
+
+                if (result.Count > 0)
+                {
+                    var len = Math.Sqrt(Math.Pow(pos.x - result[i - 1].x, 2) + Math.Pow(pos.y - result[i - 1].y, 2)) - 0.6f;
+                    if (len < 0f)
+                        pos = new Vector2(pos.x, pos.y + 0.6f);
+                }
+
+                result.Add(pos);
+                result.Add(new Vector2(-pos.x, pos.y));
+            }
+        }
+
+        void GenerateOnY(List<Vector2> result)
+        {
+            var half = MaxPlayers / 2f;
+            var xl = XDimension * 2;
+            var yl = YDimesion;
+            var s = xl * yl;
+            var ps = s / half;
+            var yOffset = ps / xl;
+
+            for (var i = 0; i < half; i++)
+            {
+                var startY = -YDimesion + (yOffset * i);
+                var yPos = startY + _rnd.NextDouble() * (yOffset * 0.8);
+
+                var xPos = -XDimension + _rnd.NextDouble() * xl;
+
+                var pos = new Vector2((float)xPos, (float)yPos);
+
+                if (result.Count > 0)
+                {
+                    var len = Math.Sqrt(Math.Pow(pos.x - result[i - 1].x, 2) + Math.Pow(pos.y - result[i - 1].y, 2)) - 0.6f;
+                    if (len < 0f)
+                        pos = new Vector2(pos.x + 0.3f, pos.y);
+                }
+
+                result.Add(pos);
+                result.Add(new Vector2(pos.x, -pos.y));
+            }
         }
     }
 }
