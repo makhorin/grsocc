@@ -10,24 +10,12 @@ namespace Assets.Scripts
         private Vector3 _target;
         float _speed;
 
-        public void Init(Vector3 pointToMove, float speed)
-        {
-            _pointToMove = pointToMove;
-            _target = _pointToMove;
-            _speed = speed;
-        }
-
         public void Init(Vector3 originalPos, Vector3 pointToMove, float speed)
         {
             _pointToMove = pointToMove;
             _originalPos = originalPos;
             _target = _pointToMove;
             _speed = speed;
-        }
-
-        private void Awake()
-        {
-            _originalPos = transform.position;
         }
 
         private void Update()

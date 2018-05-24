@@ -22,6 +22,8 @@ namespace Assets.Scripts.Generators
             var moving = 2;
             var speed = 1;
             var maxPlayers = 10;
+            var movingOffset = 0.2f;
+            var minOffset = 0.1f;
 
             var result = new List<Vector2>();
             var xl = Dimension * 2;
@@ -54,8 +56,10 @@ namespace Assets.Scripts.Generators
                 if (moving > 0)
                 {
                     moving--;
-                    var start = new Vector2(pos.x, pos.y);
-                    var finish = new Vector2(pos.x, pos.y);
+                    var xOffset = (float)_rnd.NextDouble() * movingOffset + minOffset;
+                    var yOffset = (float)_rnd.NextDouble() * movingOffset + minOffset;
+                    var start = new Vector2(pos.x + xOffset, pos.y + yOffset);
+                    var finish = new Vector2(pos.x - xOffset, pos.y - yOffset);
                     var movement = player.gameObject.AddComponent<PlayerMovement>();
                     movement.Init(start, finish, speed);
                 }
