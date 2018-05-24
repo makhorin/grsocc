@@ -12,6 +12,12 @@ public class BallController : MonoBehaviour
     public event Action Won;
     private bool _ready;
     private float _time;
+    private float _topBorder;
+    public void Init(float top)
+    {
+        _topBorder = top;
+    }
+
     void Start()
     {
         LeanTouch.OnFingerSwipe += OnSwipe;
@@ -34,7 +40,8 @@ public class BallController : MonoBehaviour
         if (!_ready)
             return;
 
-        if (Math.Abs(transform.position.y) > 2.2f || Math.Abs(transform.position.x) > 1.1f)
+        if ((transform.position.y < -2f || transform.position.y > _topBorder) ||
+            transform.position.x > Math.Abs(1.2f))
         {
             enabled = false;
             LeanTouch.OnFingerSwipe -= OnSwipe;

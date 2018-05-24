@@ -33,14 +33,17 @@ public class GameController : MonoBehaviour {
     private int _generatorIndex = 0;
     private bool _quited;
     private string _winText = "GOAL!!!";
-
-    private float _fieldLength = 2f;
+    private float _lengthCoef = 1f;
+    private float _fieldLength;
 
     public GameObject[] ToChangeHeight;
     public GameObject[] ToMoveUp;
+    public Transform Top;
 
 	void Start ()
     {
+        var p = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 13));
+        _fieldLength = -p.y;
 #if RELEASE
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
@@ -54,34 +57,51 @@ public class GameController : MonoBehaviour {
         for (var i = 1; i < Leagues.Length && _currentLevel >= Leagues[i].MinMatches; i++)
             _leagueIndex = i;
 
+        //ChangeHeight();
+
         Goal.faceColor = Leagues[_leagueIndex].Color;
         SetLevel();
         GeneratePlayers();
         ThrowBall();
         Physics.gravity *= 0.6f;
+    }
 
-        ChangeHeight();
+    private void Update()
+    {
+        if (_lengthCoef <= 1f || _lastBall == null)
+            return;
+
+        var p = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 13));
+        if (_lastBall.gameObject.transform.position.y > p.y - p.y)
+        {
+            var pos = Camera.main.gameObject.transform.position;
+            Camera.main.gameObject.transform.position = new Vector3(pos.x, pos.y += Time.deltaTime, pos.z);
+        }
+        else if (Camera.main.gameObject.transform.position.y > 0f)
+        {
+            var pos = Camera.main.gameObject.transform.position;
+            Camera.main.gameObject.transform.position = new Vector3(pos.x, pos.y -= Time.deltaTime, pos.z);
+        }
     }
 
     void ChangeHeight()
     {
-        var koef = 1.5f;
+        
         foreach (var g in ToChangeHeight)
         {
             g.transform.localScale = new Vector3(g.transform.localScale.x,
-                g.transform.localScale.y * koef,
+                g.transform.localScale.y * _lengthCoef,
                 g.transform.localScale.z);
 
             g.transform.position = new Vector3(g.transform.position.x,
-                (koef / 2) * _fieldLength,
+                _lengthCoef * _fieldLength / 2f,
                 g.transform.position.z);
         }
             
-
         foreach(var g in ToMoveUp)
         {
             g.transform.position = new Vector3(g.transform.position.x, 
-                ((g.transform.position.y + _fieldLength) * koef) - ((koef / 2) * _fieldLength), 
+                ((g.transform.position.y + _fieldLength) * _lengthCoef) - ((_lengthCoef / 2) * _fieldLength), 
                 g.transform.position.z);
         }
     }
@@ -112,6 +132,7 @@ public class GameController : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.3f);
         _lastBall = Instantiate(Ball, new Vector2(1.25f, -1.7f), Quaternion.identity);
+        _lastBall.Init(Top.transform.position.y);
         _lastBall.RigidBody.AddForce(new Vector2(-2f,0f) * _lastBall.RigidBody.mass, ForceMode.Impulse);
         _lastBall.Won += Won;
         _lastBall.Lost += Lost;
