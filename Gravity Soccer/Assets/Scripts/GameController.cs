@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour {
 
     void ChangeHeight()
     {
-        var koef = 2f;
+        var koef = 1.5f;
         foreach (var g in ToChangeHeight)
         {
             g.transform.localScale = new Vector3(g.transform.localScale.x,
@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour {
         foreach(var g in ToMoveUp)
         {
             g.transform.position = new Vector3(g.transform.position.x, 
-                ((g.transform.position.y + _fieldLength) * koef) / 2f, 
+                ((g.transform.position.y + _fieldLength) * koef) - ((koef / 2) * _fieldLength), 
                 g.transform.position.z);
         }
     }
