@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
@@ -19,13 +20,11 @@ namespace Assets.Scripts.Generators
 
         public override IEnumerable<Player> Generate(Player pattern, int level)
         {
-            var moving = 2;
-            var speed = 1;
-            var maxPlayers = 10;
-            var movingOffset = 0.2f;
+            var moving = Interpolate(level, _levels, _moving);
+            var speed = Interpolate(level, _levels, _speed);
+            var maxPlayers = Interpolate(level, _levels, _players);
+            var movingOffset = Interpolate(level, _levels, _offset);
             var minOffset = 0.1f;
-
-            var result = new List<Vector2>();
             var xl = Dimension * 2;
 
             var sc = maxPlayers + (maxPlayers % 2);
@@ -66,6 +65,42 @@ namespace Assets.Scripts.Generators
 
                 yield return player;
             }
+        }
+
+        private int[] _levels = new[] { 0, 2, 4, 10, 50 };
+        private int[] _players = new[] { 2, 4, 6, 8, 10 };
+        private int[] _moving = new[] { 0, 2, 2, 4, 6 };
+        private float[] _speed = new[] { 0f, 0.5f, 1f, 0.5f, 1f };
+        private float[] _offset = new[] { 0f, 0.2f, 0.3f, 0.5f, 0.5f };
+
+        private int Interpolate(int x, int[] xd, int[] yd)
+        {
+            int i;
+            for (i = 1; i < _levels.Length; i++)
+            {
+                if (_levels[i] > x)
+                    return (int)Math.Ceiling(Interpolate(xd[i - 1], yd[i - 1], xd[i], yd[i], x));
+            }
+
+            return yd[i - 1];
+        }
+
+        private float Interpolate(int x, int[] xd, float[] yd)
+        {
+            int i;
+            for (i = 1; i < _levels.Length; i++)
+            {
+                if (_levels[i] > x)
+                    return (float)Interpolate(xd[i - 1], yd[i - 1], xd[i], yd[i], x);
+            }
+
+            return yd[i - 1];
+        }
+
+
+        static double Interpolate(double x0, double y0, double x1, double y1, double x)
+        {
+            return y0 * (x - x1) / (x0 - x1) + y1 * (x - x0) / (x1 - x0);
         }
     }
 }

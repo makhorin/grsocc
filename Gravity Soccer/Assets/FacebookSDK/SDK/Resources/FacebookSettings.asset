@@ -15,9 +15,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 0
+  - 2081736772152626
   appLabels:
-  - App Name
+  - com.sweatyhand
   cookie: 1
   logging: 1
   status: 1
