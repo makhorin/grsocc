@@ -60,24 +60,30 @@ public class GameController : MonoBehaviour {
         ThrowBall();
         Physics.gravity *= 0.6f;
 
-        //ChangeHeight();
+        ChangeHeight();
     }
 
     void ChangeHeight()
     {
         var koef = 2f;
         foreach (var g in ToChangeHeight)
-            g.transform.localScale = new Vector3(g.transform.localScale.x, 
-                g.transform.localScale.y * koef, 
+        {
+            g.transform.localScale = new Vector3(g.transform.localScale.x,
+                g.transform.localScale.y * koef,
                 g.transform.localScale.z);
+
+            g.transform.position = new Vector3(g.transform.position.x,
+                (koef / 2) * _fieldLength,
+                g.transform.position.z);
+        }
+            
 
         foreach(var g in ToMoveUp)
         {
             g.transform.position = new Vector3(g.transform.position.x, 
-                g.transform.position.y, 
+                ((g.transform.position.y + _fieldLength) * koef) / 2f, 
                 g.transform.position.z);
         }
-            
     }
 
     void GeneratePlayers()
