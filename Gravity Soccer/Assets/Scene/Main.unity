@@ -1542,12 +1542,6 @@ GameObject:
   - component: {fileID: 911660433}
   - component: {fileID: 911660432}
   - component: {fileID: 911660435}
-  - component: {fileID: 911660437}
-  - component: {fileID: 911660439}
-  - component: {fileID: 911660436}
-  - component: {fileID: 911660440}
-  - component: {fileID: 911660438}
-  - component: {fileID: 911660441}
   - component: {fileID: 911660434}
   m_Layer: 0
   m_Name: Controls
@@ -1608,12 +1602,6 @@ MonoBehaviour:
   Ball: {fileID: 114221464405947406, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 2}
   Generators:
   - {fileID: 911660435}
-  - {fileID: 911660437}
-  - {fileID: 911660436}
-  - {fileID: 911660438}
-  - {fileID: 911660439}
-  - {fileID: 911660440}
-  - {fileID: 911660441}
   Goal: {fileID: 1977612720}
   Score: {fileID: 1863691544}
   League: {fileID: 571144665}
@@ -1654,121 +1642,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 911660431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696b0f9120c3d9743bab486c8e69c216, type: 3}
+  m_Script: {fileID: 11500000, guid: cba65a12a4f785343afd1dcb661feb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level: 0
-  MaxPlayers: 2
-  XDimension: 0.8
-  YDimesion: 0.5
---- !u!114 &911660436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 911660431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696b0f9120c3d9743bab486c8e69c216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 7
-  MaxPlayers: 6
-  XDimension: 1
-  YDimesion: 1
---- !u!114 &911660437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 911660431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696b0f9120c3d9743bab486c8e69c216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 2
-  MaxPlayers: 4
-  XDimension: 1
-  YDimesion: 0.3
---- !u!114 &911660438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 911660431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696b0f9120c3d9743bab486c8e69c216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 15
-  MaxPlayers: 8
-  XDimension: 1
-  YDimesion: 1
---- !u!114 &911660439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 911660431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 105a772d0a05ddb45bf7ec6c1e3dc993, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 4
-  MaxPlayers: 4
-  XDimension: 1
-  YDimesion: 1
-  GoalKeeper: {x: 0, y: 1.4}
-  Distance: 1.5
-  MinSpeed: 0.2
-  MaxSpeed: 0.5
-  MinMoving: 2
-  MaxMoving: 4
-  GoalKeeperChance: 1
---- !u!114 &911660440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 911660431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 105a772d0a05ddb45bf7ec6c1e3dc993, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 10
-  MaxPlayers: 6
-  XDimension: 1
-  YDimesion: 1
-  GoalKeeper: {x: 0, y: 1.4}
-  Distance: 1.5
-  MinSpeed: 0.2
-  MaxSpeed: 0.5
-  MinMoving: 4
-  MaxMoving: 4
-  GoalKeeperChance: 0.3
---- !u!114 &911660441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 911660431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: add0ad46b6750054599085fcc211f386, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 20
-  MaxPlayers: 8
-  XDimension: 1
-  YDimesion: 1
-  MinSpeed: 0.2
-  MaxSpeed: 1
-  GoalKeeper: {x: 0, y: 1.4}
-  Distance: 1.5
+  Dimension: 1
 --- !u!1 &990889698
 GameObject:
   m_ObjectHideFlags: 0

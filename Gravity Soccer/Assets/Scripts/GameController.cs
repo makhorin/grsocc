@@ -57,13 +57,11 @@ public class GameController : MonoBehaviour {
         for (var i = 1; i < Leagues.Length && _currentLevel >= Leagues[i].MinMatches; i++)
             _leagueIndex = i;
 
-        //ChangeHeight();
-
         Goal.faceColor = Leagues[_leagueIndex].Color;
         SetLevel();
         GeneratePlayers();
         ThrowBall();
-        Physics.gravity *= 0.6f;
+        Physics.gravity *= 0.7f;
     }
 
     private void Update()
@@ -112,7 +110,7 @@ public class GameController : MonoBehaviour {
             Destroy(p.gameObject);
         _players.Clear();
 
-        _players.AddRange(_sortedGenerators[_generatorIndex].Generate(Player));
+        _players.AddRange(_sortedGenerators[_generatorIndex].Generate(Player, _currentLevel));
         Color playersColor;
         do
         {
