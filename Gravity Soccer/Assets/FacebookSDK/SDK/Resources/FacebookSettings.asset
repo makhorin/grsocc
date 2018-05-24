@@ -15,9 +15,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 2081736772152626
+  - 0
   appLabels:
-  - Gravity Kick
+  - App Name
   cookie: 1
   logging: 1
   status: 1
