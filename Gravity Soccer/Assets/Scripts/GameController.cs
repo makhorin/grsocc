@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour {
         SetLevel();
         GeneratePlayers();
         ThrowBall();
-        Physics.gravity *= 0.7f;
+        Physics.gravity *= 0.6f;
     }
 
     private void Update()
@@ -134,6 +134,8 @@ public class GameController : MonoBehaviour {
         _lastBall.RigidBody.AddForce(new Vector2(-2f,0f) * _lastBall.RigidBody.mass, ForceMode.Impulse);
         _lastBall.Won += Won;
         _lastBall.Lost += Lost;
+        foreach (var o in FindObjectsOfType<PlayerMoveToX>())
+            o.Init(_lastBall);
     }
 
     private void Lost()
