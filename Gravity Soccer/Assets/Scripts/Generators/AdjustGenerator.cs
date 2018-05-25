@@ -56,9 +56,8 @@ namespace Assets.Scripts.Generators
                 {
                     moving--;
                     var xOffset = (float)_rnd.NextDouble() * movingOffset + minOffset;
-                    var yOffset = (float)_rnd.NextDouble() * movingOffset + minOffset;
-                    var start = new Vector2(pos.x + xOffset, pos.y + yOffset);
-                    var finish = new Vector2(pos.x - xOffset, pos.y - yOffset);
+                    var start = new Vector2(pos.x + xOffset, pos.y );
+                    var finish = new Vector2(pos.x - xOffset, pos.y);
                     var movement = player.gameObject.AddComponent<PlayerMovement>();
                     movement.Init(start, finish, speed);
                 }
