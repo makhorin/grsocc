@@ -17,7 +17,7 @@ MonoBehaviour:
   appIds:
   - 2081736772152626
   appLabels:
-  - com.sweatyhand
+  - com.sweatyhands.gravitykick
   cookie: 1
   logging: 1
   status: 1
