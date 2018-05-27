@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour {
         _fieldLength = -p.y;
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
-        _currentLevel = Math.Max(1,ZPlayerPrefs.GetInt("level", 1));
+        _currentLevel = Math.Max(12,ZPlayerPrefs.GetInt("level", 1));
         _sortedGenerators.AddRange(Generators);
         _sortedGenerators.Sort(new GeneratorComparer());
         for (var i = 0; i < _sortedGenerators.Count && _sortedGenerators[i].MinLevel <= _currentLevel; i++)

@@ -51,26 +51,29 @@ namespace Assets.Scripts.Generators
             var indexes = new List<int>();
             var k = 0;
             indexes.AddRange(list.Select(l => k++));
-            while (movingX > 0 && indexes.Count > 0)
+            var mx = Math.Floor(list.Count * movingX);
+            while (mx > 0 && indexes.Count > 0)
             {
                 var playerIndex = indexes[_rnd.Next(0, indexes.Count)];
 
                 var player = list[playerIndex];
                 player.gameObject.AddComponent<PlayerMoveToX>().Init(speed);
                 indexes.Remove(playerIndex);
-                movingX--;
+                mx--;
             }
 
-            while (movingXY > 0 && indexes.Count > 0)
+            var mxy = Math.Floor(list.Count * movingXY);
+            while (mxy > 0 && indexes.Count > 0)
             {
                 var playerIndex = indexes[_rnd.Next(0, indexes.Count)];
                 var player = list[playerIndex];
                 player.gameObject.AddComponent<PlayerMoveXY>().Init(speed);
                 indexes.Remove(playerIndex);
-                movingXY--;
+                mxy--;
             }
 
-            while (movingBF > 0 && indexes.Count > 0)
+            var mbf = Math.Floor(list.Count * movingBF);
+            while (mbf > 0 && indexes.Count > 0)
             {
                 var playerIndex = indexes[_rnd.Next(0, indexes.Count)];
                 var player = list[playerIndex];
@@ -78,7 +81,7 @@ namespace Assets.Scripts.Generators
                 var targetPos = new Vector2(player.transform.position.x + 0.2f, player.transform.position.y);
                 player.gameObject.AddComponent<PlayerMovement>().Init(origPos, targetPos,speed);
                 indexes.Remove(playerIndex);
-                movingBF--;
+                mbf--;
             }
 
             return list;
@@ -86,10 +89,10 @@ namespace Assets.Scripts.Generators
 
         private int[] _levels = new[] { 1, 2, 5, 8, 11, 20, 50 };
         private int[] _players = new[] { 1, 1, 1, 1, 1, 1, 2 };
-        private int[] _movingX = new[] { 0, 1, 1, 2, 1, 2, 4 };
-        private int[] _movingXY = new[] { 0, 0, 1, 1, 1, 2, 3 };
-        private int[] _movingBackForth = new[] { 0, 1, 2, 2, 0, 3, 5};
-        private float[] _speed = new[] { 0.4f, 0.5f, 0.6f, 0.7f, 0.5f, 0.8f, 1f };
+        private float[] _movingX = new[] { 0, 0.2f, 0.2f, 0.3f, 0.1f, 0.3f, 0.3f };
+        private float[] _movingXY = new[] { 0, 0, 0.2f, 0.2f, 0f, 0.2f, 0.3f };
+        private float[] _movingBackForth = new[] { 0, 0f, 0.2f, 0.2f, 0.1f, 0.2f, 0.3f };
+        private float[] _speed = new[] { 0.4f, 0.5f, 0.5f, 0.6f, 0.5f, 0.7f, 1f };
 
         private int Interpolate(int x, int[] xd, int[] yd)
         {
