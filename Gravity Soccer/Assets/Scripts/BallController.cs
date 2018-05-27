@@ -10,9 +10,11 @@ public class BallController : MonoBehaviour
     public ParticleSystem Explosion;
     public event Action Lost;
     public event Action Won;
+    public event Action Kick;
     private bool _ready;
     private float _time;
     private float _topBorder;
+    private GameObject _tutor;
     public void Init(float top)
     {
         _topBorder = top;
@@ -27,7 +29,8 @@ public class BallController : MonoBehaviour
     {
         if (!_ready)
             return;
-
+        if (Kick != null)
+            Kick();
         var velocity = new Vector2(finger.SwipeScaledDelta.x * 0.03f, Math.Max(0f, finger.SwipeScaledDelta.y * 0.04f));
         RigidBody.velocity = velocity * RigidBody.mass;
         RigidBody.AddTorque(velocity * 0.1f);
@@ -68,7 +71,8 @@ public class BallController : MonoBehaviour
                 _ready = true;
                 break;
             case "Enemy":
-                Destroy(Instantiate(Explosion, transform.position, Quaternion.identity), 1f);
+                var exp = Instantiate(Explosion, transform.position, Quaternion.identity);
+                Destroy(exp.gameObject, 1f);
                 LeanTouch.OnFingerSwipe -= OnSwipe;
                 Destroy(gameObject);
                 if (Lost != null)

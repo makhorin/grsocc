@@ -40,7 +40,8 @@ public class GameController : MonoBehaviour {
     public GameObject[] ToMoveUp;
     public GameObject Stripes;
     public GameObject StripesParent;
-
+    public GameObject Tutor;
+    private bool _tutorShown = true;
     private int _stripesCount;
     private float _gateDiff;
     public Transform Top;
@@ -49,11 +50,9 @@ public class GameController : MonoBehaviour {
     {
         var p = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 13));
         _fieldLength = -p.y;
-#if RELEASE
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
-#endif
-        _currentLevel = 1;//Math.Max(1,ZPlayerPrefs.GetInt("level", 1));
+        _currentLevel = Math.Max(1,ZPlayerPrefs.GetInt("level", 1));
         _sortedGenerators.AddRange(Generators);
         _sortedGenerators.Sort(new GeneratorComparer());
         for (var i = 0; i < _sortedGenerators.Count && _sortedGenerators[i].MinLevel <= _currentLevel; i++)
@@ -179,6 +178,8 @@ public class GameController : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.3f);
         _lastBall = Instantiate(Ball, new Vector2(1.25f, -1.7f), Quaternion.identity);
+        if(_tutorShown)
+            _lastBall.Kick += OnKick;
         _lastBall.Init(Top.transform.position.y);
         _lastBall.RigidBody.AddForce(new Vector2(-2f,0f) * _lastBall.RigidBody.mass, ForceMode.Impulse);
         _lastBall.Won += Won;
@@ -189,6 +190,15 @@ public class GameController : MonoBehaviour {
             o.Reset();
             o.Init(_lastBall);
         }
+    }
+
+    private void OnKick()
+    {
+        _lastBall.Kick -= OnKick;
+        _tutorShown = false;
+        Tutor.SetActive(false);
+        League.gameObject.SetActive(true);
+        Score.gameObject.SetActive(true);
     }
 
     private void Lost()
@@ -203,9 +213,7 @@ public class GameController : MonoBehaviour {
     private void Won()
     {
         _currentLevel++;
-#if RELEASE
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "game", _currentLevel);
-#endif
         ZPlayerPrefs.SetInt("level", _currentLevel);
         _lastBall.Won -= Won;
         _lastBall.Lost -= Lost;
@@ -218,7 +226,7 @@ public class GameController : MonoBehaviour {
         foreach (var c in _winText)
         {
             Goal.text += c;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
         foreach (var p in Particles)
             p.Play();
@@ -244,9 +252,7 @@ public class GameController : MonoBehaviour {
         GeneratePlayers();
         ThrowBall();
         SetLevel();
-#if RELEASE
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
-#endif
     }
 
     void SetLevel()
@@ -282,16 +288,12 @@ public class GameController : MonoBehaviour {
             if (_quited)
                 return;
             _quited = true;
-#if RELEASE
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "game", _currentLevel);
-#endif
         }
         else
         {
             _quited = false;
-#if RELEASE
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "game");
-#endif
         }
     }
 
@@ -300,9 +302,7 @@ public class GameController : MonoBehaviour {
         if (_quited)
             return;
         _quited = true;
-#if RELEASE
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "game", _currentLevel);
-#endif
     }
 
     [Serializable]

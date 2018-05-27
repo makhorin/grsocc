@@ -8,7 +8,7 @@ namespace Assets.Scripts
         {
             get
             {
-                return 1f;
+                return 1.3f;
             }
         }
 
