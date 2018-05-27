@@ -1677,7 +1677,7 @@ MonoBehaviour:
   - MinMatches: 0
     Name: Newbie League
     Color: {r: 0.14305799, g: 0.9264706, b: 0.34296313, a: 1}
-  - MinMatches: 2
+  - MinMatches: 3
     Name: Junior League
     Color: {r: 1, g: 0.9529412, b: 0.43137255, a: 1}
   - MinMatches: 10
