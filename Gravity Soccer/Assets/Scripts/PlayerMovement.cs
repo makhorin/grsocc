@@ -15,7 +15,7 @@ namespace Assets.Scripts
             _pointToMove = pointToMove;
             _originalPos = originalPos;
             _target = _pointToMove;
-            _speed = speed;
+            _speed = speed * 0.5f;
         }
 
         private void Update()
