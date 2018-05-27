@@ -40,7 +40,7 @@ namespace Assets.Scripts.Generators
                 var xPos = UnityEngine.Random.Range(startX, startX + (xl * 0.9f));
 
                 var startY = -_yDimension + (yOffset * i);
-                var yPos = UnityEngine.Random.Range(startY, startY + (yOffset * 0.8f));
+                var yPos = UnityEngine.Random.Range(startY, startY + (yOffset * 0.3f));
 
                 var pos = new Vector2(xPos, yPos);
 
