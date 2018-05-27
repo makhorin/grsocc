@@ -85,13 +85,14 @@ public class GameController : MonoBehaviour {
 
         var p = Camera.main.ScreenToWorldPoint(new Vector3(0, 0f, 13));
         var pos = Camera.main.gameObject.transform.position;
-        if (_lastBall.gameObject.transform.position.y > p.y + _fieldLength)
+        var diff = _lastBall.gameObject.transform.position.y - (p.y + _fieldLength);
+        if (diff > 0f)
         {
             if (pos.y + _gateDiff >= Top.position.y)
                 return;
             Camera.main.gameObject.transform.position = new Vector3(pos.x, pos.y += Time.deltaTime, pos.z);
         }
-        else if (Camera.main.gameObject.transform.position.y > 0f)
+        else if (Camera.main.gameObject.transform.position.y > 0f && diff < 0.1f)
             Camera.main.gameObject.transform.position = new Vector3(pos.x, pos.y -= Time.deltaTime, pos.z);
     }
 
