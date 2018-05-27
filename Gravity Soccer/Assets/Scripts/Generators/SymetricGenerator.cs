@@ -84,12 +84,12 @@ namespace Assets.Scripts.Generators
             return list;
         }
 
-        private int[] _levels = new[] { 1, 2, 5, 10, 50 };
-        private int[] _players = new[] { 1, 1, 1, 2, 3 };
-        private int[] _movingX = new[] { 0, 1, 1, 3, 4 };
-        private int[] _movingXY = new[] { 0, 0, 1, 2, 4 };
-        private int[] _movingBackForth = new[] { 2, 2, 2, 4, 6 };
-        private float[] _speed = new[] { 0.5f, 0.5f, 0.5f, 0.8f, 2f };
+        private int[] _levels = new[] { 1, 2, 5, 10, 20, 50 };
+        private int[] _players = new[] { 1, 1, 1, 1, 2, 2 };
+        private int[] _movingX = new[] { 0, 1, 1, 2, 3, 4 };
+        private int[] _movingXY = new[] { 0, 0, 1, 1, 2, 3 };
+        private int[] _movingBackForth = new[] { 0, 1, 2, 4, 4,6 };
+        private float[] _speed = new[] { 0.5f, 0.5f, 0.5f, 0.8f, 1f, 2f };
 
         private int Interpolate(int x, int[] xd, int[] yd)
         {
