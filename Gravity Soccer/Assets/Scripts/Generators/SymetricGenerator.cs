@@ -89,7 +89,7 @@ namespace Assets.Scripts.Generators
         private int[] _movingX = new[] { 0, 1, 1, 2, 1, 2, 4 };
         private int[] _movingXY = new[] { 0, 0, 1, 1, 1, 2, 3 };
         private int[] _movingBackForth = new[] { 0, 1, 2, 2, 0, 3, 5};
-        private float[] _speed = new[] { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.8f, 1f };
+        private float[] _speed = new[] { 0.4f, 0.5f, 0.6f, 0.7f, 0.5f, 0.8f, 1f };
 
         private int Interpolate(int x, int[] xd, int[] yd)
         {
