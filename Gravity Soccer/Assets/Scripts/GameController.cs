@@ -92,7 +92,7 @@ public class GameController : MonoBehaviour {
                 return;
             Camera.main.gameObject.transform.position = new Vector3(pos.x, pos.y += Time.deltaTime, pos.z);
         }
-        else if (Camera.main.gameObject.transform.position.y > 0f && diff < 0.1f)
+        else if (Camera.main.gameObject.transform.position.y > 0f && diff < 1f)
             Camera.main.gameObject.transform.position = new Vector3(pos.x, pos.y -= Time.deltaTime, pos.z);
     }
 
