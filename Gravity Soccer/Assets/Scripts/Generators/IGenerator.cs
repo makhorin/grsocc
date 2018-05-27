@@ -9,7 +9,7 @@ namespace Assets.Scripts
         protected Quaternion _rotation = Quaternion.identity;
         public abstract int MinLevel { get; }
 
-        public abstract IEnumerable<Player> Generate(Player pattern, int level);
+        public abstract IEnumerable<Player> Generate(Player pattern, int level, float dimensionCoef);
 
         protected Player Generate(Player pattern, Vector2 pos)
         {
