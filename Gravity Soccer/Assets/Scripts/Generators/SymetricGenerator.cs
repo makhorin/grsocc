@@ -90,9 +90,9 @@ namespace Assets.Scripts.Generators
         private int[] _levels = new[] { 1, 2, 5, 8, 11, 20, 50 };
         private int[] _players = new[] { 1, 1, 1, 1, 1, 1, 2 };
         private float[] _movingX = new[] { 0, 0.2f, 0.2f, 0.3f, 0.1f, 0.3f, 0.3f };
-        private float[] _movingXY = new[] { 0, 0, 0.2f, 0.2f, 0f, 0.2f, 0.3f };
+        private float[] _movingXY = new[] { 0, 0, 0.1f, 0.1f, 0f, 0.2f, 0.3f };
         private float[] _movingBackForth = new[] { 0, 0f, 0.2f, 0.2f, 0.1f, 0.2f, 0.3f };
-        private float[] _speed = new[] { 0.3f, 0.4f, 0.3f, 0.5f, 0.4f, 0.7f, 1f };
+        private float[] _speed = new[] { 0.3f, 0.5f, 0.4f, 0.5f, 0.4f, 0.7f, 1f };
 
         private int Interpolate(int x, int[] xd, int[] yd)
         {
